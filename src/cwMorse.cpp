@@ -8,6 +8,30 @@ extern Si5351 si5351;
 extern uint16_t duration;
 extern uint16_t hz;
 
+void cw(bool state)
+{
+    if (state)
+    {
+        si5351.output_enable(SI5351_CLK0, 1);
+#ifdef LED_ENABLE
+        digitalWrite(PIN_TX, HIGH);
+#endif
+#ifdef BUZZER_ENABLE
+        tone(PIN_SP, hz);
+#endif
+    }
+    else
+    {
+        si5351.output_enable(SI5351_CLK0, 0);
+#ifdef LED_ENABLE
+        digitalWrite(PIN_TX, LOW);
+#endif
+#ifdef BUZZER_ENABLE
+        noTone(PIN_SP);
+#endif
+    }
+}
+
 void di()
 {
     cw(true); // TX di
@@ -32,22 +56,6 @@ void char_space()
 void word_space()
 {                        // 7x, pause between words
     delay(6 * duration); // 1x from end of the word + 6x from the beginning of new word
-}
-
-void cw(bool state)
-{ // TX-CW, TX-LED, 750 Hz sound
-    if (state)
-    {
-        si5351.output_enable(SI5351_CLK0, 1);
-        digitalWrite(PIN_TX, HIGH);
-        tone(PIN_SP, hz);
-    }
-    else
-    {
-        si5351.output_enable(SI5351_CLK0, 0);
-        digitalWrite(PIN_TX, LOW);
-        noTone(PIN_SP);
-    }
 }
 
 void cw_string_proc(String str)

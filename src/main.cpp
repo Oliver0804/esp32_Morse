@@ -12,9 +12,9 @@ int32_t cal_factor = -514000000; // 需要從範例中進行校準
 uint16_t duration = 85; // 摩斯電碼的持續時間 - 毫秒
 uint16_t morse_duration = 85;
 
-uint16_t hz = 444;                    // 本地Buzz的频率
-uint64_t target_freq = 1000000000ULL; // 10Mhz
-String cw_message = "Hello World";    // 不必要XD, 只是為了測試
+uint16_t hz = 444;                        // 本地Buzz的频率
+uint64_t target_freq = 1000000000ULL;     // 10Mhz
+String cw_message = "Yuan Shen Chi Dong"; // 不必要XD, 只是為了測試
 
 #include <WiFi.h>
 #include <WebServer.h>
@@ -103,9 +103,9 @@ void setup()
 {
   Serial.begin(115200);
 
-  // TX-CW, TX-LED, 750 Hz sound
+#ifdef LED_ENABLE
   pinMode(PIN_TX, OUTPUT);
-
+#endif
   si5351.init(SI5351_CRYSTAL_LOAD_8PF, 0, 0);
   si5351.set_correction(cal_factor, SI5351_PLL_INPUT_XO);
   si5351.set_pll(SI5351_PLL_FIXED, SI5351_PLLA);
@@ -171,7 +171,6 @@ void loop()
   {
     String cmd = Serial.readStringUntil('\n');
     handleATCommand(cmd);
-
     cw(false);
   }
 }
