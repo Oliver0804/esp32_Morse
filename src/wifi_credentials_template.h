@@ -2,7 +2,7 @@
 #ifndef WIFI_CREDENTIALS_H
 #define WIFI_CREDENTIALS_H
 
-#define WIFI_SSID "OpenWrt"
-#define WIFI_PASSWORD "08041218"
+#define WIFI_SSID "YourSSID"
+#define WIFI_PASSWORD "YourPassword"
 
 #endif
