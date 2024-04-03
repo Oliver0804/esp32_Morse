@@ -18,8 +18,10 @@ String cw_message = "Hello World";    // 不必要XD, 只是為了測試
 
 #include <WiFi.h>
 #include <WebServer.h>
-const char *ssid = "SSID";
-const char *password = "PASSWORD";
+
+#include "wifi_credentials.h"
+const char *ssid = WIFI_SSID;
+const char *password = WIFI_PASSWORD;
 
 WebServer server(80); // WebServer Port 80
 String inputForm()

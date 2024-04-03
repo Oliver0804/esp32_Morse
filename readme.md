@@ -25,6 +25,19 @@ Open the project with PlatformIO.
 Connect the SI5351 module to your ESP32 following the module’s datasheet.
 Build and upload the project to your ESP32 board.
 
+src/wifi_credentials.h
+
+```
+// wifi_credentials.h
+#ifndef WIFI_CREDENTIALS_H
+#define WIFI_CREDENTIALS_H
+
+#define WIFI_SSID "YourSSID"
+#define WIFI_PASSWORD "YourPassword"
+
+#endif
+```
+
 ## Web Interface
 
 The ESP32 hosts a web server that serves an HTML form for easy input of Morse code transmission parameters.
