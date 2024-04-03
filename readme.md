@@ -2,8 +2,9 @@
 
 This project uses an ESP32 and an SI5351 clock generator to transmit Morse code messages. It leverages PlatformIO as the primary development environment, providing an easy way to manage project dependencies and configurations. Users can input Morse code transmission settings via a web page served by the ESP32 or by sending AT commands over a serial connection.
 
-!(https://youtube.com/shorts/I7Kv4bjHuSA?feature=share)[https://youtube.com/shorts/I7Kv4bjHuSA?feature=share]
-!(./docs/demo.png)[./docs/demo.png]
+[Youtube Demo](https://youtube.com/shorts/I7Kv4bjHuSA?feature=share)
+
+![./docs/demo.png](./docs/demo.png)
 
 ## Features
 
