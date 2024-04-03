@@ -41,6 +41,7 @@ src/wifi_credentials.h
 ## Web Interface
 
 The ESP32 hosts a web server that serves an HTML form for easy input of Morse code transmission parameters.
+![webdemo](docs/webdemo.png)
 
 ## Accessing the Web Page
 
