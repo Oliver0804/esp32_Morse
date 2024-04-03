@@ -40,7 +40,7 @@ String inputForm()
          "<h2>Morse Code Sender</h2>"
          "<form action=\"/send\" method=\"post\">"
          "<label for=\"message\">Message:</label>"
-         "<input type=\"text\" id=\"message\" name=\"message\" value=\"Hello World\"><br>"
+         "<input type=\"text\" id=\"message\" name=\"message\" value=\"Yuan Shen Chi Dong\"><br>"
          "<label for=\"frequency\">Frequency (MHz):</label>"
          "<input type=\"text\" id=\"frequency\" name=\"frequency\" value=\"10.100\"><br>"
          "<label for=\"duration\">Duration (ms):</label>"
