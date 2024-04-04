@@ -61,10 +61,10 @@ void word_space()
 void cw_string_proc(String str)
 { // Processing string to characters
     for (uint8_t j = 0; j < str.length(); j++)
-        cw_char_proc(str[j]);
+        cw_char2morse_proc(str[j]);
 }
 
-void cw_char_proc(char m)
+void cw_char2morse_proc(char m)
 {
     // Morse code representation for characters 'A'-'Z' and '0'-'9', '?', '=', ',', '/'
     static const char *morseCodes[] = {
@@ -114,4 +114,17 @@ void cw_char_proc(char m)
         }
         char_space(); // Space after each character except for the last one
     }
+}
+
+char cw_morse2char_proc(const String &morseCode)
+{
+    for (int i = 0; morseCodeMappings[i].code[0] != '\0'; i++)
+    {
+        if (morseCode.equals(morseCodeMappings[i].code))
+        {
+            // 找到匹配，返回对应的ASCII字符
+            return morseCodeMappings[i].character;
+        }
+    }
+    return '\0';
 }

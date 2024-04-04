@@ -23,6 +23,12 @@ String cw_message = "Yuan Shen Chi Dong"; // 不必要XD, 只是為了測試
 const char *ssid = WIFI_SSID;
 const char *password = WIFI_PASSWORD;
 
+// button
+bool keyboardEnabled = true;
+unsigned long buttonPressedTime = 0;
+const unsigned long longPressTime = 2000;
+String morseCode = ""; // 暫存摩斯電碼
+
 WebServer server(80); // WebServer Port 80
 String inputForm()
 {
@@ -103,6 +109,8 @@ void setup()
 {
   Serial.begin(115200);
 
+  pinMode(BUTTON_DI, INPUT_PULLUP); // 配置为输入，并启用内部上拉电阻
+  pinMode(BUTTON_DAH, INPUT_PULLUP);
 #ifdef LED_ENABLE
   pinMode(PIN_TX, OUTPUT);
 #endif
@@ -165,12 +173,88 @@ void setup()
 void loop()
 {
   server.handleClient(); // WebServer listening
-
   // AT Command
   if (Serial.available())
   {
     String cmd = Serial.readStringUntil('\n');
     handleATCommand(cmd);
     cw(false);
+  }
+
+  if (digitalRead(BUTTON_DI) == LOW && digitalRead(BUTTON_DAH) == LOW)
+  {
+    if (buttonPressedTime == 0)
+    {
+      buttonPressedTime = millis();
+    }
+    else if (millis() - buttonPressedTime > longPressTime)
+    {
+      keyboardEnabled = !keyboardEnabled;
+      buttonPressedTime = 0;
+      if (keyboardEnabled)
+      {
+        Serial.println("Keyboard enabled.");
+      }
+      else
+      {
+        Serial.println("Keyboard disabled.");
+      }
+    }
+  }
+  else
+  {
+    buttonPressedTime = 0;
+  }
+  if (keyboardEnabled)
+  {
+    // 如果BUTTON_DI被按下，添加"."到morseCode字符串
+    if (digitalRead(BUTTON_DI) == LOW && digitalRead(BUTTON_DAH) == HIGH)
+    {
+      Serial.print(".");
+      if (morseCode.length() > MAX_MORSE_CODE_LENGTH)
+      {
+        Serial.println("\nError: Morse Code too long");
+        morseCode = ""; // 清空morseCode字符串
+      }
+      else
+      {
+        morseCode += "."; // 累积摩斯电码
+      }
+      di();
+    }
+    // 如果BUTTON_DAH被按下，添加"-"到morseCode字符串
+    else if (digitalRead(BUTTON_DAH) == LOW && digitalRead(BUTTON_DI) == HIGH)
+    {
+      Serial.print("-");
+      if (morseCode.length() > MAX_MORSE_CODE_LENGTH)
+      {
+        Serial.println("\nError: Morse Code too long");
+        morseCode = ""; // 清空morseCode字符串
+      }
+      else
+      {
+        morseCode += "-"; // 累积摩斯电码
+      }
+      dah();
+    }
+
+    else if (!morseCode.isEmpty() && digitalRead(BUTTON_DI) == HIGH && digitalRead(BUTTON_DAH) == HIGH)
+    {
+      // Serial.print("morseCodeRaw: ");
+      // Serial.println(morseCode);
+      char decodedChar = cw_morse2char_proc(morseCode); // 解析摩斯电码
+      if (decodedChar != '\0')
+      {
+        Serial.println();
+        Serial.print("Decoded: ");
+        Serial.println(decodedChar); // 打印解析结果
+      }
+      else
+      { // 如果解析失败
+        Serial.println("\nError: Unknown Morse Code");
+      }
+      morseCode = "";
+      delay(duration);
+    }
   }
 }

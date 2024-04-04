@@ -14,4 +14,9 @@
 #define BUZZER_PIN 26
 #define PIN_SP BUZZER_PIN
 
+// BUTTON
+#define BUTTON_DI 14
+#define BUTTON_DAH 12
+#define DEBOUNCE_DELAY 50
+
 #endif
