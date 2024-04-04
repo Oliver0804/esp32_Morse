@@ -18,6 +18,8 @@ ESP32 development board
 SI5351 clock generator module
 PlatformIO IDE
 
+![./docs/si5351.png](./docs/si5351.png)
+
 ## Getting Started
 
 Clone the repository to your local machine.
