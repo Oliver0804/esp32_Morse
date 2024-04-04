@@ -79,7 +79,6 @@ CW (Continuous Wave) Morse code is extremely popular in amateur radio, spanning 
 - 12 Meter Band: 24.890 - 24.990 MHz, with a smaller CW operation area, usually at the beginning of the band.
 - 10 Meter Band: 28.000 - 29.700 MHz, with CW operations possible from 28.000 - 28.070 MHz,
 
-but the CW area may be broader, especially during periods of high solar activity.
 It is important to note that the above frequency allocations may vary according to specific regional regulations, so it is advisable to consult local frequency allocation regulations before operating. Some countries might have slightly different frequency restrictions or additional bands available for amateur radio use.
 
 Due to its excellent performance at low signal strengths, CW is widely used for long-distance communication (DXing) and low-power (QRP) operations. Even in very crowded bands or environments with significant electromagnetic interference (EMI), CW signals can be received and decoded, making it one of the most popular modes in amateur radio operations.
