@@ -75,12 +75,7 @@ void setup()
 #ifdef LED_ENABLE
   pinMode(PIN_TX, OUTPUT);
 #endif
-  si5351.init(SI5351_CRYSTAL_LOAD_8PF, 0, 0);
-  si5351.set_correction(cal_factor, SI5351_PLL_INPUT_XO);
-  si5351.set_pll(SI5351_PLL_FIXED, SI5351_PLLA);
-  si5351.set_freq(target_freq, SI5351_CLK0);
-
-  cw(false);
+  si5351_init();
   // WI-FI Connection
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED)

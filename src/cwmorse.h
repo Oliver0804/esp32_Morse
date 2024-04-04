@@ -3,7 +3,7 @@
 #define CWMORSE_H
 
 #include <Arduino.h>
-
+void si5351_init();
 void di();
 void dah();
 void char_space();

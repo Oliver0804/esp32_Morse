@@ -2,7 +2,15 @@
 #include "cwMorse.h"
 #include "Si5351.h"
 #include <main.h>
+void si5351_init()
+{
+    si5351.init(SI5351_CRYSTAL_LOAD_8PF, 0, 0);
+    si5351.set_correction(cal_factor, SI5351_PLL_INPUT_XO);
+    si5351.set_pll(SI5351_PLL_FIXED, SI5351_PLLA);
+    si5351.set_freq(target_freq, SI5351_CLK0);
 
+    cw(false);
+}
 void cw(bool state)
 {
     if (state)
@@ -52,13 +60,18 @@ void word_space()
 {                        // 7x, pause between words
     delay(6 * duration); // 1x from end of the word + 6x from the beginning of new word
 }
-
+/*
+ *
+ */
 void cw_string_proc(String str)
 { // Processing string to characters
     for (uint8_t j = 0; j < str.length(); j++)
         cw_char2morse_proc(str[j]);
 }
 
+/*
+ *將字符轉換為摩斯電碼
+ */
 void cw_char2morse_proc(char m)
 {
     // Morse code representation for characters 'A'-'Z' and '0'-'9', '?', '=', ',', '/'
@@ -111,6 +124,9 @@ void cw_char2morse_proc(char m)
     }
 }
 
+/*
+ *將摩斯電碼轉換為字符
+ */
 char cw_morse2char_proc(const String &morseCode)
 {
     for (int i = 0; morseCodeMappings[i].code[0] != '\0'; i++)
