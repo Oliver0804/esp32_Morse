@@ -1,4 +1,7 @@
 {
     "idf.port": "/dev/cu.usbserial-0001",
-    "idf.flashType": "UART"
+    "idf.flashType": "UART",
+    "files.associations": {
+        "main.h": "c"
+    }
 }

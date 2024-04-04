@@ -1,64 +1,25 @@
 
 #include <Arduino.h>
 #include <main.h>
-
+#include <Wire.h>
 #include <cwmorse.h>
-#include "si5351.h"
-
 Si5351 si5351;
-
 int32_t cal_factor = -514000000; // 需要從範例中進行校準
 
 uint16_t duration = 85; // 摩斯電碼的持續時間 - 毫秒
-uint16_t morse_duration = 85;
 
 uint16_t hz = 444;                        // 本地Buzz的频率
 uint64_t target_freq = 1000000000ULL;     // 10Mhz
 String cw_message = "Yuan Shen Chi Dong"; // 不必要XD, 只是為了測試
 
-#include <WiFi.h>
-#include <WebServer.h>
-
+// WI-FI Connection SSID and Password
 #include "wifi_credentials.h"
 const char *ssid = WIFI_SSID;
 const char *password = WIFI_PASSWORD;
 
-// button
-bool keyboardEnabled = true;
-unsigned long buttonPressedTime = 0;
-const unsigned long longPressTime = 2000;
-String morseCode = ""; // 暫存摩斯電碼
-
-WebServer server(80); // WebServer Port 80
-String inputForm()
-{
-  return "<!DOCTYPE html><html><head>"
-         "<style>"
-         "body { font-family: 'Courier New', monospace; margin: 20px; padding: 20px; background-color: #333; color: #8FBC8F; }"
-         "form { background-color: #2F4F4F; padding: 20px; border-radius: 8px; }"
-         "input[type=text], input[type=submit] { width: 100%; padding: 12px; margin: 8px 0; display: inline-block; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }"
-         "input[type=text] { background-color: #222; color: #8FBC8F; }"
-         "input[type=submit] { width: auto; background-color: #4CAF50; color: white; cursor: pointer; }"
-         "input[type=submit]:hover { background-color: #45a049; }"
-         "label { color: #8FBC8F; }"
-         "</style>"
-         "</head><body>"
-         "<h2>Morse Code Sender</h2>"
-         "<form action=\"/send\" method=\"post\">"
-         "<label for=\"message\">Message:</label>"
-         "<input type=\"text\" id=\"message\" name=\"message\" value=\"Yuan Shen Chi Dong\"><br>"
-         "<label for=\"frequency\">Frequency (MHz):</label>"
-         "<input type=\"text\" id=\"frequency\" name=\"frequency\" value=\"10.100\"><br>"
-         "<label for=\"duration\">Duration (ms):</label>"
-         "<input type=\"text\" id=\"duration\" name=\"duration\" value=\"85\"><br>"
-         "<input type=\"submit\" value=\"Send\">"
-         "</form></body></html>";
-}
-
 // 基於設置進行摩斯電碼發送
 void sendMorseCode()
 {
-  duration = morse_duration;
   si5351.set_freq(target_freq * 100, SI5351_CLK0);
   cw_string_proc(cw_message);
   Serial.println("Morse code sent: " + cw_message);
@@ -94,17 +55,17 @@ void handleATCommand(String cmd)
 
     // 更新設定
     target_freq = freqHz;
-    morse_duration = durationMs;
+    duration = durationMs;
 
     // 發送摩斯電碼
     sendMorseCode();
 
     Serial.println("AT Command received. Message: " + cw_message +
                    ", Frequency: " + String(target_freq) + " Hz" + // 转换回MHz单位
-                   ", Duration: " + String(morse_duration) + " ms");
+                   ", Duration: " + String(duration) + " ms");
   }
 }
-//----------
+
 void setup()
 {
   Serial.begin(115200);
@@ -141,38 +102,13 @@ void setup()
 
   Serial.print("DNS Server: ");
   Serial.println(WiFi.dnsIP());
-  server.on("/", HTTP_GET, []()
-            {
-              server.send(200, "text/html", inputForm()); // 提供HTML表单
-            });
 
-  server.on("/send", HTTP_POST, []()
-            {            
-  String message = server.arg("message");
-  String freq = server.arg("frequency");
-  String durationStr = server.arg("duration");
-
-  long freqHz = freq.toInt() ; 
-  int durationMs = durationStr.toInt();
-
-  if (freqHz <= 0 || durationMs <= 0) {
-    server.send(400, "text/plain", "Invalid frequency or duration.");
-    return;
-  }
-
-  target_freq = freqHz; 
-  morse_duration = durationMs; 
-  cw_message = message; 
-  cw_string_proc(cw_message);
-
-
-  server.send(200, "text/plain", "Message received: " + message); });
-  server.begin();
+  webServerRun();
 }
 //----------
 void loop()
 {
-  server.handleClient(); // WebServer listening
+  webServerloop();
   // AT Command
   if (Serial.available())
   {
@@ -180,81 +116,5 @@ void loop()
     handleATCommand(cmd);
     cw(false);
   }
-
-  if (digitalRead(BUTTON_DI) == LOW && digitalRead(BUTTON_DAH) == LOW)
-  {
-    if (buttonPressedTime == 0)
-    {
-      buttonPressedTime = millis();
-    }
-    else if (millis() - buttonPressedTime > longPressTime)
-    {
-      keyboardEnabled = !keyboardEnabled;
-      buttonPressedTime = 0;
-      if (keyboardEnabled)
-      {
-        Serial.println("Keyboard enabled.");
-      }
-      else
-      {
-        Serial.println("Keyboard disabled.");
-      }
-    }
-  }
-  else
-  {
-    buttonPressedTime = 0;
-  }
-  if (keyboardEnabled)
-  {
-    // 如果BUTTON_DI被按下，添加"."到morseCode字符串
-    if (digitalRead(BUTTON_DI) == LOW && digitalRead(BUTTON_DAH) == HIGH)
-    {
-      Serial.print(".");
-      if (morseCode.length() > MAX_MORSE_CODE_LENGTH)
-      {
-        Serial.println("\nError: Morse Code too long");
-        morseCode = ""; // 清空morseCode字符串
-      }
-      else
-      {
-        morseCode += "."; // 累积摩斯电码
-      }
-      di();
-    }
-    // 如果BUTTON_DAH被按下，添加"-"到morseCode字符串
-    else if (digitalRead(BUTTON_DAH) == LOW && digitalRead(BUTTON_DI) == HIGH)
-    {
-      Serial.print("-");
-      if (morseCode.length() > MAX_MORSE_CODE_LENGTH)
-      {
-        Serial.println("\nError: Morse Code too long");
-        morseCode = ""; // 清空morseCode字符串
-      }
-      else
-      {
-        morseCode += "-"; // 累积摩斯电码
-      }
-      dah();
-    }
-
-    else if (!morseCode.isEmpty() && digitalRead(BUTTON_DI) == HIGH && digitalRead(BUTTON_DAH) == HIGH)
-    {
-      // Serial.print("morseCodeRaw: ");
-      // Serial.println(morseCode);
-      char decodedChar = cw_morse2char_proc(morseCode); // 解析摩斯电码
-      if (decodedChar != '\0')
-      {
-        Serial.println();
-        Serial.print("Decoded: ");
-        Serial.println(decodedChar); // 打印解析结果
-      }
-      else
-      { // 如果解析失败
-        Serial.println("\nError: Unknown Morse Code");
-      }
-      morseCode = "";
-      delay(duration);
-    }
-  }
+  buttonEvent();
 }

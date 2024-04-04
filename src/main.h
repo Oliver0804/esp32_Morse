@@ -4,6 +4,23 @@
 
 #include <Arduino.h>
 
+#include <WiFi.h>
+#include <WebServer.h>
+#include <html.h>
+
+#include "si5351.h"
+#include <cwMorse.h>
+#include <button.h>
+extern Si5351 si5351;
+
+extern int32_t cal_factor;
+
+extern uint16_t duration;
+
+extern uint16_t hz;
+extern uint64_t target_freq;
+extern String cw_message;
+
 // LED
 #define LED_ENABLE 1
 #define LED_PIN 5
