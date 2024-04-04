@@ -1,9 +1,5 @@
 #include <main.h>
-
 WebServer server(80); // WebServer Port 80
-
-extern uint64_t target_freq;
-extern String cw_message;
 
 void webServerRun()
 {

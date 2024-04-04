@@ -6,10 +6,10 @@
 Si5351 si5351;
 int32_t cal_factor = -514000000; // 需要從範例中進行校準
 
-uint16_t duration = 85; // 摩斯電碼的持續時間 - 毫秒
+uint16_t duration = 100; // 摩斯電碼的持續時間 - 毫秒
 
 uint16_t hz = 444;                        // 本地Buzz的频率
-uint64_t target_freq = 1000000000ULL;     // 10Mhz
+uint64_t target_freq = 1000000000ULL;     // 預設CW 10Mhz
 String cw_message = "Yuan Shen Chi Dong"; // 不必要XD, 只是為了測試
 
 // WI-FI Connection SSID and Password

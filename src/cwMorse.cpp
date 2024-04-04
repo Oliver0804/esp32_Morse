@@ -3,11 +3,6 @@
 #include "Si5351.h"
 #include <main.h>
 
-extern Si5351 si5351;
-
-extern uint16_t duration;
-extern uint16_t hz;
-
 void cw(bool state)
 {
     if (state)
