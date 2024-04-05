@@ -34,6 +34,8 @@ extern String cw_message;
 #define BUZZER_ENABLE 1
 #define BUZZER_PIN 23
 #define PIN_SP BUZZER_PIN
+#define di_hz 750
+#define dah_hz 750
 
 // BUTTON
 #define BUTTON_DI 26

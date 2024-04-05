@@ -19,9 +19,6 @@ void cw(bool state)
 #ifdef LED_ENABLE
         digitalWrite(PIN_TX, HIGH);
 #endif
-#ifdef BUZZER_ENABLE
-        tone(PIN_SP, hz);
-#endif
     }
     else
     {
@@ -29,24 +26,33 @@ void cw(bool state)
 #ifdef LED_ENABLE
         digitalWrite(PIN_TX, LOW);
 #endif
-#ifdef BUZZER_ENABLE
-        noTone(PIN_SP);
-#endif
     }
 }
 
 void di()
 {
+#ifdef BUZZER_ENABLE
+    tone(PIN_SP, di_hz);
+#endif
     cw(true); // TX di
     delay(duration);
+#ifdef BUZZER_ENABLE
+    noTone(PIN_SP);
+#endif
     cw(false); // stop TX di
     delay(duration);
 }
 
 void dah()
 {
+#ifdef BUZZER_ENABLE
+    tone(PIN_SP, dah_hz);
+#endif
     cw(true); // TX dah
     delay(3 * duration);
+#ifdef BUZZER_ENABLE
+    noTone(PIN_SP);
+#endif
     cw(false); // stop TX dah
     delay(duration);
 }
