@@ -12,8 +12,6 @@ void displayInit()
     if (!display.begin(SSD1306_SWITCHCAPVCC))
     {
         Serial.println(F("SSD1306 allocation failed"));
-        for (;;)
-            ; // Don't proceed, loop forever
     }
 }
 
@@ -22,13 +20,14 @@ void drawLogo()
     display.clearDisplay();              // 清除显示屏内容
     display.setTextSize(2);              // 设置文本大小。根据你的显示屏大小调整这个值以适合显示"MORSE"
     display.setTextColor(SSD1306_WHITE); // 设置文本颜色为白色
-    display.setCursor(35, 0);            // 设置开始绘制文本的位置。根据需要调整这些值以在显示屏上居中显示"MORSE"
+    display.setCursor(5, 0);             // 设置开始绘制文本的位置。根据需要调整这些值以在显示屏上居中显示"MORSE"
     // 显示"MORSE"
 
-    display.println("MORSE");
-    display.setCursor(10, 15); // 设置开始绘制文本的位置。根据需要调整这些值以在显示屏上居中显示"MORSE"
+    display.println("MORSE CODE");
+
+    display.setCursor(5, 15); // 设置开始绘制文本的位置。根据需要调整这些值以在显示屏上居中显示"MORSE"
     display.println("-");
-    display.setCursor(90, 15); // 设置开始绘制文本的位置。根据需要调整这些值以在显示屏上居中显示"MORSE"
+    display.setCursor(115, 15); // 设置开始绘制文本的位置。根据需要调整这些值以在显示屏上居中显示"MORSE"
     display.println(".");
     display.display(); // 更新显示屏以显示新的内容
 }

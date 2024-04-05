@@ -81,11 +81,19 @@ void setup()
   si5351_init();
   // WI-FI Connection
   WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED)
+  for (int i = 0; i < 10; i++)
   {
-    delay(500);
-    Serial.print(".");
+    if (WiFi.status() != WL_CONNECTED)
+    {
+      delay(100);
+      Serial.println("Connecting to WiFi...");
+    }
+    else
+    {
+      break;
+    }
   }
+
   Serial.println("WiFi connected.");
 
   Serial.println("WiFi connected.");
@@ -106,7 +114,6 @@ void setup()
 void loop()
 {
   webServerloop();
-
   // AT Command
   if (Serial.available())
   {
