@@ -4,6 +4,8 @@ This project uses an ESP32 and an SI5351 clock generator to transmit Morse code 
 
 To simulate the operation of a Morse Code Double Paddle Automatic Keyer Short using an ESP32 microcontroller, you would first need to program the ESP32 to recognize input from a double paddle keyer. The double paddle keyer is a device used by amateur radio operators to send Morse code more efficiently than with traditional single-key methods. This simulation involves detecting short (dit) and long (dah) presses corresponding to Morse code's dots and dashes, respectively.
 
+![alt text](docs/likethis.jpg)
+
 The ESP32 must be programmed to convert these inputs into Morse code signals. This requires setting up GPIO (General Purpose Input/Output) pins to read the state of each paddle. When a paddle is pressed, the ESP32 will detect whether it is the left paddle (typically representing dits) or the right paddle (representing dahs), and generate the corresponding Morse code signal.
 
 Synchronous decoding involves the ESP32 interpreting these signals in real-time to decode the Morse code back into alphanumeric characters. This can be achieved by implementing a Morse code decoder algorithm within the ESP32's firmware, which maps sequences of dits and dahs to their corresponding characters.
