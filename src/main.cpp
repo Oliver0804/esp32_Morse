@@ -5,6 +5,9 @@
 #include <Wire.h>
 #include <cwmorse.h>
 
+Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT,
+                         OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
+
 Si5351 si5351;
 
 int32_t cal_factor = -514000000; // 需要從範例中進行校準
@@ -69,9 +72,86 @@ void handleATCommand(String cmd)
   }
 }
 
+void testdrawline()
+{
+  int16_t i;
+
+  display.clearDisplay(); // Clear display buffer
+
+  for (i = 0; i < display.width(); i += 4)
+  {
+    display.drawLine(0, 0, i, display.height() - 1, SSD1306_WHITE);
+    display.display(); // Update screen with each newly-drawn line
+    delay(1);
+  }
+  for (i = 0; i < display.height(); i += 4)
+  {
+    display.drawLine(0, 0, display.width() - 1, i, SSD1306_WHITE);
+    display.display();
+    delay(1);
+  }
+  delay(250);
+
+  display.clearDisplay();
+
+  for (i = 0; i < display.width(); i += 4)
+  {
+    display.drawLine(0, display.height() - 1, i, 0, SSD1306_WHITE);
+    display.display();
+    delay(1);
+  }
+  for (i = display.height() - 1; i >= 0; i -= 4)
+  {
+    display.drawLine(0, display.height() - 1, display.width() - 1, i, SSD1306_WHITE);
+    display.display();
+    delay(1);
+  }
+  delay(250);
+
+  display.clearDisplay();
+
+  for (i = display.width() - 1; i >= 0; i -= 4)
+  {
+    display.drawLine(display.width() - 1, display.height() - 1, i, 0, SSD1306_WHITE);
+    display.display();
+    delay(1);
+  }
+  for (i = display.height() - 1; i >= 0; i -= 4)
+  {
+    display.drawLine(display.width() - 1, display.height() - 1, 0, i, SSD1306_WHITE);
+    display.display();
+    delay(1);
+  }
+  delay(250);
+
+  display.clearDisplay();
+
+  for (i = 0; i < display.height(); i += 4)
+  {
+    display.drawLine(display.width() - 1, 0, 0, i, SSD1306_WHITE);
+    display.display();
+    delay(1);
+  }
+  for (i = 0; i < display.width(); i += 4)
+  {
+    display.drawLine(display.width() - 1, 0, i, display.height() - 1, SSD1306_WHITE);
+    display.display();
+    delay(1);
+  }
+
+  delay(2000); // Pause for 2 seconds
+}
 void setup()
 {
   Serial.begin(115200);
+  if (!display.begin(SSD1306_SWITCHCAPVCC))
+  {
+    Serial.println(F("SSD1306 allocation failed"));
+    for (;;)
+      ; // Don't proceed, loop forever
+  }
+
+  testdrawline(); // Draw many lines
 
   pinMode(BUTTON_DI, INPUT_PULLUP); // 配置为输入，并启用内部上拉电阻
   pinMode(BUTTON_DAH, INPUT_PULLUP);
