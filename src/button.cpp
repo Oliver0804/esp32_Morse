@@ -38,10 +38,12 @@ void buttonEvent()
         if (digitalRead(BUTTON_DI) == LOW && digitalRead(BUTTON_DAH) == HIGH)
         {
             Serial.print(".");
+            drawMorseCode('\0');
             if (morseCode.length() > MAX_MORSE_CODE_LENGTH)
             {
                 Serial.println("\nError: Morse Code too long");
                 morseCode = ""; // 清空morseCode字符串
+                drawClear();
             }
             else
             {
@@ -53,10 +55,13 @@ void buttonEvent()
         else if (digitalRead(BUTTON_DAH) == LOW && digitalRead(BUTTON_DI) == HIGH)
         {
             Serial.print("-");
+            drawMorseCode('\0');
+
             if (morseCode.length() > MAX_MORSE_CODE_LENGTH)
             {
                 Serial.println("\nError: Morse Code too long");
                 morseCode = ""; // 清空morseCode字符串
+                drawClear();
             }
             else
             {
@@ -75,6 +80,7 @@ void buttonEvent()
                 Serial.println();
                 Serial.print("Decoded: ");
                 Serial.println(decodedChar); // 打印解析结果
+                drawMorseCode(decodedChar);
             }
             else
             { // 如果解析失败

@@ -13,6 +13,8 @@
 #include "si5351.h"
 #include <cwMorse.h>
 #include <button.h>
+#include <display.h>
+
 extern Si5351 si5351;
 
 extern int32_t cal_factor;
