@@ -72,7 +72,10 @@ void word_space()
 void cw_string_proc(String str)
 { // Processing string to characters
     for (uint8_t j = 0; j < str.length(); j++)
+    {
         cw_char2morse_proc(str[j]);
+        drawMorseCode(str[j]);
+    }
 }
 
 /*

@@ -2,7 +2,17 @@
 
 This project uses an ESP32 and an SI5351 clock generator to transmit Morse code messages. It leverages PlatformIO as the primary development environment, providing an easy way to manage project dependencies and configurations. Users can input Morse code transmission settings via a web page served by the ESP32 or by sending AT commands over a serial connection.
 
-[Youtube Demo](https://youtube.com/shorts/I7Kv4bjHuSA?feature=share)
+To simulate the operation of a Morse Code Double Paddle Automatic Keyer Short using an ESP32 microcontroller, you would first need to program the ESP32 to recognize input from a double paddle keyer. The double paddle keyer is a device used by amateur radio operators to send Morse code more efficiently than with traditional single-key methods. This simulation involves detecting short (dit) and long (dah) presses corresponding to Morse code's dots and dashes, respectively.
+
+The ESP32 must be programmed to convert these inputs into Morse code signals. This requires setting up GPIO (General Purpose Input/Output) pins to read the state of each paddle. When a paddle is pressed, the ESP32 will detect whether it is the left paddle (typically representing dits) or the right paddle (representing dahs), and generate the corresponding Morse code signal.
+
+Synchronous decoding involves the ESP32 interpreting these signals in real-time to decode the Morse code back into alphanumeric characters. This can be achieved by implementing a Morse code decoder algorithm within the ESP32's firmware, which maps sequences of dits and dahs to their corresponding characters.
+
+To enable transmission of Morse code signals through an ESP32 web server, the microcontroller needs to be connected to a WiFi network and configured to run a web server. Users can interact with this web server through a web interface (a webpage hosted on the ESP32), where they can enter text to be transmitted as Morse code. The ESP32 then converts the text into Morse code signals, which can be output through an LED, a speaker, or even transmitted over radio frequencies, depending on the hardware setup.
+
+[Youtube Demo](https://youtu.be/FuqGE0an_eQ)
+
+![alt text](docs/demo2.jpeg)
 
 ![./docs/demo.png](./docs/demo.png)
 

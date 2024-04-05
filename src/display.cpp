@@ -5,6 +5,7 @@ Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT,
 
 extern String morseCode;
 String lastMorseCode = "";
+char lastdecodedtempChar = '\0';
 String displayText = "";
 void displayInit()
 {
@@ -39,7 +40,7 @@ void drawClear()
 }
 void drawMorseCode(char decodedtempChar)
 {
-    if (morseCode != lastMorseCode)
+    if ((morseCode != lastMorseCode) || (lastdecodedtempChar != decodedtempChar))
     {
         // Serial.print("[Morse Code]");
         // Serial.println(lastMorseCode);

@@ -85,6 +85,11 @@ void buttonEvent()
             else
             { // 如果解析失败
                 Serial.println("\nError: Unknown Morse Code");
+#ifdef BUZZER_ENABLE
+                tone(PIN_SP, err_hz);
+                delay(duration * 2);
+                noTone(PIN_SP);
+#endif
             }
             morseCode = "";
             delay(duration);
