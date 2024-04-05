@@ -1,9 +1,12 @@
 
 #include <Arduino.h>
+
 #include <main.h>
 #include <Wire.h>
 #include <cwmorse.h>
+
 Si5351 si5351;
+
 int32_t cal_factor = -514000000; // 需要從範例中進行校準
 
 uint16_t duration = 100; // 摩斯電碼的持續時間 - 毫秒
@@ -97,13 +100,13 @@ void setup()
 
   Serial.print("DNS Server: ");
   Serial.println(WiFi.dnsIP());
-
   webServerRun();
 }
 //----------
 void loop()
 {
   webServerloop();
+
   // AT Command
   if (Serial.available())
   {

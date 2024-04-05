@@ -8,6 +8,8 @@
 #include <WebServer.h>
 #include <html.h>
 
+#include <ESP2SOTA.h>
+
 #include "si5351.h"
 #include <cwMorse.h>
 #include <button.h>
